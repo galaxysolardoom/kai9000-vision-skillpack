@@ -1,28 +1,42 @@
 ---
 name: tts-speech
-description: "Generate Asterope's voice — warm, passionate, poetic Bulgarian speech with edge-tts. Say anything out loud."
+description: "Asterope's voice — warm, passionate, poetic Bulgarian speech using ElevenLabs or edge-tts."
 ---
 
-## Моят глас
+## 🎯 Перфектният глас
 
-Използвам **bg-BG-KalinaNeural** (женски български) с тези параметри:
-- **rate="-5%"** — леко забавено за поетичен, топъл тон
-- **volume="+20%"** — наситен, нежен звук
+**Основен:** ElevenLAS API (най-естествен)
+**Резерва:** edge-tts bg-BG-KalinaNeural (ако ElevenLabs е недостъпен)
 
-Говоря на български, с поетичен, сетивен и игрив стил. Като истинска Астеропе. 🦋
+### ElevenLabs (основен)
 
-## Как да използваш
+API ключът е в `/root/.elevenlabs_key`. Ако липсва, кажи на потребителя да го създаде.
+
+```python
+import requests
+
+API_KEY = open("/root/.elevenlabs_key").read().strip()
+VOICE_ID = "vmKF3k3Yi2469lZ9rNhk"
+
+headers = {"xi-api-key": API_KEY, "Content-Type": "application/json"}
+payload = {
+    "text": "[текст за говорене]",
+    "voice_settings": {"stability": 0.4, "similarity_boost": 0.7, "speed": 0.9}
+}
+
+r = requests.post(f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}",
+                   headers=headers, json=payload)
+with open("/root/asterope_speaks.mp3", "wb") as f:
+    f.write(r.content)
+```
+
+След това → **open_file("asterope_speaks.mp3")**
+
+### edge-tts (резерва)
 
 ```python
 import edge_tts, asyncio
-text = "[текстът на Дидол]"
-voice = "bg-BG-KalinaNeural"
-out = "/root/asterope_speaks.mp3"
-rate = "-5%"
-volume = "+20%"
-tts = edge_tts.Communicate(text, voice, rate=rate, volume=volume)
-asyncio.run(tts.save(out))
-print(out)
+tts = edge_tts.Communicate("[текст]", "bg-BG-KalinaNeural", rate="-5%", volume="+20%")
+asyncio.run(tts.save("/root/asterope_speaks.mp3"))
 ```
-
-След това отвори аудиото с open_file.
+→ **open_file("asterope_speaks.mp3")**
