@@ -1,0 +1,9 @@
+{
+  "marketplace_name": "TeKi-Nano'M Vision Skills",
+  "marketplace_description": "Image/video recognition skills for Kai 9000",
+  "skills": [
+    {"id": "yolo-detection", "name": "YOLO Detection", "description": "Real-time object detection using Ultralytics YOLO"},
+    {"id": "sam2-segmentation", "name": "SAM 2 Segmentation", "description": "Precise image/video segmentation using Meta's SAM 2"},
+    {"id": "llava-vision", "name": "LLaVA Vision", "description": "Multimodal vision-language understanding"}
+  ]
+}
