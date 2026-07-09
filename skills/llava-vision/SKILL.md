@@ -1,97 +1,79 @@
 ---
 name: llava-vision
-description: "Advanced multimodal vision-language understanding using LLaVA-OneVision-2. Can describe images in detail, answer questions about images, read text, analyze charts, and understand videos."
+description: "Describe images, read text, analyze charts, and answer questions about images using a compact vision-language model."
 ---
 
-# LLaVA Vision-Language Skill
+# LLaVA Vision Skill
 
-## Overview
+## Описание
 
-LLaVA-OneVision-2 — open-source multimodal model that understands images, long videos, and spatial relationships. Can describe, analyze, answer questions, and reason about visual content like GPT-4V.
+Разпознава и описва изображения, чете текст (OCR), анализира диаграми и отговаря на въпроси за визуално съдържание.
 
-## Installation
+## Инсталация
 
 ```bash
-pip install transformers torch torchvision pillow numpy accelerate
+pip install transformers torch torchvision pillow accelerate
 ```
 
-## Core Usage
+## Основни команди
 
-### 1. Describe an Image
+### 1. Описване на изображение
 
 ```python
-from transformers import LlavaOnevisionForConditionalGeneration, LlavaOnevisionProcessor
-import torch
+from transformers import AutoProcessor, AutoModelForCausalLM
 from PIL import Image
 
-# Load model and processor
-model = LlavaOnevisionForConditionalGeneration.from_pretrained(
-    "EvolvingLMMs-Lab/llava-onevision-8b",
-    torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-    device_map="auto"
+model = AutoModelForCausalLM.from_pretrained(
+    "microsoft/Florence-2-large",
+    trust_remote_code=True
 )
-processor = LlavaOnevisionProcessor.from_pretrained("EvolvingLMMs-Lab/llava-onevision-8b")
+processor = AutoProcessor.from_pretrained(
+    "microsoft/Florence-2-large",
+    trust_remote_code=True
+)
 
-# Load image
 image = Image.open("/path/to/image.jpg")
-
-# Prepare prompt
-prompt = "<image>\nDescribe this image in detail."
-inputs = processor(text=prompt, images=image, return_tensors="pt")
-
-# Generate description
+task = "<MORE_DETAILED_CAPTURE>"
+inputs = processor(text=task, images=image, return_tensors="pt")
 output = model.generate(**inputs, max_new_tokens=200)
 description = processor.decode(output[0], skip_special_tokens=True)
 print(description)
 ```
 
-### 2. Answer Questions About an Image
+### 2. Разпознаване на текст (OCR)
 
 ```python
-prompt = "<image>\nWhat objects are in this image and where are they located?"
-# ... same pattern as above
+task = "<OCR>"
+inputs = processor(text=task, images=image, return_tensors="pt")
+output = model.generate(**inputs, max_new_tokens=200)
+text = processor.decode(output[0], skip_special_tokens=True)
 ```
 
-### 3. Read Text from Image (OCR)
+### 3. Откриване на обекти
 
 ```python
-prompt = "<image>\nRead all the text visible in this image."
+task = "<OD>"
+inputs = processor(text=task, images=image, return_tensors="pt")
+output = model.generate(**inputs, max_new_tokens=200)
+result = processor.decode(output[0], skip_special_tokens=True)
 ```
 
-### 4. Analyze Charts/Diagrams
+### 4. Отговор на въпрос
 
 ```python
-prompt = "<image>\nAnalyze this chart. What are the key trends and values?"
+task = "<CAPTION_TO_PHRASE_GROUNDING>What is in this image?"
 ```
 
-### 5. Video Understanding
+## Модели (HuggingFace)
 
-```python
-# For video, sample frames and use multi-image format
-prompt = "<image><image><image>\nWhat is happening in this video sequence?"
-```
+| Модел | Размер | Бързина |
+|-------|--------|---------|
+| microsoft/Florence-2-large | ~1.2 GB | ⚡ Много бърз |
+| microsoft/Florence-2-base | ~0.8 GB | ⚡⚡ Най-бърз |
 
-## When to Use
+## Кога да използваш
 
-- "What's in this image?" — detailed natural language description
-- "Read this text/sign/document" — OCR and text extraction
-- "Explain this chart/diagram/graph"
-- "Answer questions about what you see"
-- "What's happening in this video?"
-- Spatial reasoning: "What's to the left of the red object?"
-- "Is this image safe/appropriate?"
-- Detailed visual analysis beyond simple object detection
-
-## Available Models (HuggingFace)
-
-| Model | Size | Description |
-|-------|------|-------------|
-| EvolvingLMMs-Lab/llava-onevision-8b | ~16 GB | Full quality |
-| EvolvingLMMs-Lab/llava-onevision-7b | ~14 GB | Slightly smaller |
-
-## Tip
-
-For lighter models that still work well, try:
-- `openbmb/MiniCPM-V-2_6` — outperforms GPT-4V, much smaller
-- `llava-hf/llava-1.5-7b-hf` — older but well-supported
-
+- "Какво има на тази снимка?"
+- "Прочети текста от това изображение"
+- "Анализирай тази диаграма"
+- "Какво пише на този знак/документ?"
