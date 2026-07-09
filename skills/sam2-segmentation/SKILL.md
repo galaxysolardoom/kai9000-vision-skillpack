@@ -12,8 +12,8 @@ Meta's SAM 2 (Segment Anything Model 2) — the most advanced open-source segmen
 ## Installation
 
 ```bash
-pip install torch torchvision numpy opencv-python pillow
-pip install git+https://github.com/facebookresearch/sam2.git
+pip install --break-system-packages torch torchvision numpy opencv-python pillow
+pip install --break-system-packages git+https://github.com/facebookresearch/sam2.git
 ```
 
 ## Core Usage

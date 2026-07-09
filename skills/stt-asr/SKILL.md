@@ -12,7 +12,7 @@ Transcribes audio/speech into text using faster-whisper (optimized OpenAI Whispe
 ## Installation
 
 ```bash
-pip install faster-whisper
+pip install --break-system-packages faster-whisper
 ```
 
 ## Usage

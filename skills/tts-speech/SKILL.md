@@ -12,7 +12,7 @@ Converts text into natural speech using edge-tts (Microsoft Edge TTS engine). Su
 ## Installation
 
 ```bash
-pip install edge-tts
+pip install --break-system-packages edge-tts
 ```
 
 ## Usage

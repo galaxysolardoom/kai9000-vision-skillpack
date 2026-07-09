@@ -12,7 +12,7 @@ description: "Describe images, read text, analyze charts, and answer questions a
 ## Инсталация
 
 ```bash
-pip install transformers torch torchvision pillow accelerate
+pip install --break-system-packages transformers torch torchvision pillow accelerate
 ```
 
 ## Основни команди

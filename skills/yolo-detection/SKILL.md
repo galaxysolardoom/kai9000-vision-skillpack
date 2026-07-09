@@ -14,7 +14,7 @@ Uses Ultralytics YOLO (You Only Look Once) — the fastest real-time object dete
 Run once to set up:
 
 ```bash
-pip install ultralytics pillow numpy
+pip install --break-system-packages ultralytics pillow numpy
 ```
 
 ## Core Commands
