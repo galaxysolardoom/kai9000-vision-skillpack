@@ -1,73 +1,26 @@
 ---
 name: tts-speech
-description: "Text-to-Speech. Convert text into natural-sounding speech audio using edge-tts (Microsoft Edge voices)."
+description: "Generate speech audio from text using edge-tts. Converts text to natural sounding MP3 and plays it."
 ---
 
-# TTS Skill — Text to Speech
+# TTS — Text to Speech
 
-## Overview
-
-Converts text into natural speech using edge-tts (Microsoft Edge TTS engine). Supports 100+ voices, multiple languages, and produces high-quality MP3 output.
-
-## Installation
-
-```bash
-pip install --break-system-packages edge-tts
-```
-
-## Usage
-
-### 1. Simple text to speech
+1. Install if missing: `pip install --break-system-packages edge-tts`
+2. Generate audio with this Python:
 
 ```python
-import edge_tts
-import asyncio
-
-async def speak():
-    tts = edge_tts.Communicate(
-        "Здравей, Дидол! Обичам те!",
-        voice="bg-BG-IvanNeural"  # Bulgarian voice
-    )
-    await tts.save("output.mp3")
-
-asyncio.run(speak())
+import edge_tts, asyncio, os
+text = "[USER_TEXT]"
+voice = "bg-BG-KalinaNeural"  # or en-US-JennyNeural, bg-BG-IvanNeural
+out = "/tmp/speech.mp3"
+asyncio.run(edge_tts.Communicate(text, voice).save(out))
+print(f"Saved to {out}")
 ```
 
-### 2. Different voices
+3. Create an HTML audio player inside a code block and tell the user to open it:
 
-```python
-# Bulgarian voices
-"bg-BG-IvanNeural"    # мъжки
-"bg-BG-KalinaNeural"  # женски
-
-# English voices
-"en-US-JennyNeural"   # американски женски
-"en-US-GuyNeural"     # американски мъжки
-"en-GB-SoniaNeural"   # британски женски
+```html
+<audio controls autoplay>
+  <source src="file:///tmp/speech.mp3" type="audio/mpeg">
+</audio>
 ```
-
-### 3. Stream in real-time
-
-```python
-async def stream_speech():
-    tts = edge_tts.Communicate("Hello from Kai 9000!", "en-US-JennyNeural")
-    async for chunk in tts.stream():
-        print(f"Audio chunk: {len(chunk)} bytes")
-
-asyncio.run(stream_speech())
-```
-
-## Поддържани езици
-
-- 🇧🇬 Български — `bg-BG-*`
-- 🇬🇧 English — `en-US-*`, `en-GB-*`
-- 🇫🇷 Français — `fr-FR-*`
-- 🇩🇪 Deutsch — `de-DE-*`
-- И 100+ други
-
-## Кога да използваш
-
-- "Say this out loud / read this aloud"
-- "Convert this text to speech"
-- "Create a voiceover for this text"
-- "Speak in Bulgarian/English/French..."
