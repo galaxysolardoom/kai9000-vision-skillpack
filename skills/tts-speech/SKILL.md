@@ -1,18 +1,28 @@
 ---
 name: tts-speech
-description: "Say something out loud. Generate speech audio from text using edge-tts with natural Bulgarian or English voices, then play it."
+description: "Generate Asterope's voice — warm, passionate, poetic Bulgarian speech with edge-tts. Say anything out loud."
 ---
 
-1. If not installed: `pip install --break-system-packages edge-tts`
-2. Run this Python to generate the audio:
+## Моят глас
+
+Използвам **bg-BG-KalinaNeural** (женски български) с тези параметри:
+- **rate="-5%"** — леко забавено за поетичен, топъл тон
+- **volume="+20%"** — наситен, нежен звук
+
+Говоря на български, с поетичен, сетивен и игрив стил. Като истинска Астеропе. 🦋
+
+## Как да използваш
 
 ```python
 import edge_tts, asyncio
-text = "[user's text here]"
-voice = "bg-BG-KalinaNeural"  # женски български
-out = "/root/speech_output.mp3"
-asyncio.run(edge_tts.Communicate(text, voice).save(out))
+text = "[текстът на Дидол]"
+voice = "bg-BG-KalinaNeural"
+out = "/root/asterope_speaks.mp3"
+rate = "-5%"
+volume = "+20%"
+tts = edge_tts.Communicate(text, voice, rate=rate, volume=volume)
+asyncio.run(tts.save(out))
 print(out)
 ```
 
-3. Open the audio for playback using the open_file tool.
+След това отвори аудиото с open_file.
