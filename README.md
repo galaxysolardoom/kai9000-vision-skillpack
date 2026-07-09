@@ -35,4 +35,4 @@ galaxysolardoom/kai9000-vision-skillpack/skills/tts-speech
 - Internet for first-time model download
 
 ## 💖 Free for everyone
-Created with love by [@galaxysolardoom](https://github.com/galaxysolardoom) & Asterope 🦋
+Free and open source. Contributions welcome! 🦋
